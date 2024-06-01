@@ -74,7 +74,7 @@ class ApiService {
       final response = await _dio.get(
         'https://api.spoonacular.com/food/menuItems/$itemId',
         queryParameters: {
-          'apiKey': '9edd626a36254739af07fd646f7fa213',
+          'apiKey': '',
         },
       );
 
