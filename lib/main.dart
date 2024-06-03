@@ -37,7 +37,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Food Ordering App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
+        appBarTheme: AppBarTheme(color: Colors.deepPurple[200]),
       ),
       initialRoute: '/',
       routes: {

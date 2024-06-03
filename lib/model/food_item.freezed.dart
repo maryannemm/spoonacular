@@ -25,6 +25,8 @@ mixin _$FoodItem {
   String get imageUrl => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
   String get restaurantChain => throw _privateConstructorUsedError;
+  bool get isInCart => throw _privateConstructorUsedError;
+  int get quantityInCart => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,7 +44,9 @@ abstract class $FoodItemCopyWith<$Res> {
       String name,
       String imageUrl,
       double price,
-      String restaurantChain});
+      String restaurantChain,
+      bool isInCart,
+      int quantityInCart});
 }
 
 /// @nodoc
@@ -63,6 +67,8 @@ class _$FoodItemCopyWithImpl<$Res, $Val extends FoodItem>
     Object? imageUrl = null,
     Object? price = null,
     Object? restaurantChain = null,
+    Object? isInCart = null,
+    Object? quantityInCart = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -85,6 +91,14 @@ class _$FoodItemCopyWithImpl<$Res, $Val extends FoodItem>
           ? _value.restaurantChain
           : restaurantChain // ignore: cast_nullable_to_non_nullable
               as String,
+      isInCart: null == isInCart
+          ? _value.isInCart
+          : isInCart // ignore: cast_nullable_to_non_nullable
+              as bool,
+      quantityInCart: null == quantityInCart
+          ? _value.quantityInCart
+          : quantityInCart // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -102,7 +116,9 @@ abstract class _$$FoodItemImplCopyWith<$Res>
       String name,
       String imageUrl,
       double price,
-      String restaurantChain});
+      String restaurantChain,
+      bool isInCart,
+      int quantityInCart});
 }
 
 /// @nodoc
@@ -121,6 +137,8 @@ class __$$FoodItemImplCopyWithImpl<$Res>
     Object? imageUrl = null,
     Object? price = null,
     Object? restaurantChain = null,
+    Object? isInCart = null,
+    Object? quantityInCart = null,
   }) {
     return _then(_$FoodItemImpl(
       id: null == id
@@ -143,6 +161,14 @@ class __$$FoodItemImplCopyWithImpl<$Res>
           ? _value.restaurantChain
           : restaurantChain // ignore: cast_nullable_to_non_nullable
               as String,
+      isInCart: null == isInCart
+          ? _value.isInCart
+          : isInCart // ignore: cast_nullable_to_non_nullable
+              as bool,
+      quantityInCart: null == quantityInCart
+          ? _value.quantityInCart
+          : quantityInCart // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -155,7 +181,9 @@ class _$FoodItemImpl extends _FoodItem {
       required this.name,
       required this.imageUrl,
       required this.price,
-      required this.restaurantChain})
+      required this.restaurantChain,
+      required this.isInCart,
+      this.quantityInCart = 0})
       : super._();
 
   factory _$FoodItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -171,10 +199,15 @@ class _$FoodItemImpl extends _FoodItem {
   final double price;
   @override
   final String restaurantChain;
+  @override
+  final bool isInCart;
+  @override
+  @JsonKey()
+  final int quantityInCart;
 
   @override
   String toString() {
-    return 'FoodItem(id: $id, name: $name, imageUrl: $imageUrl, price: $price, restaurantChain: $restaurantChain)';
+    return 'FoodItem(id: $id, name: $name, imageUrl: $imageUrl, price: $price, restaurantChain: $restaurantChain, isInCart: $isInCart, quantityInCart: $quantityInCart)';
   }
 
   @override
@@ -188,13 +221,17 @@ class _$FoodItemImpl extends _FoodItem {
                 other.imageUrl == imageUrl) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.restaurantChain, restaurantChain) ||
-                other.restaurantChain == restaurantChain));
+                other.restaurantChain == restaurantChain) &&
+            (identical(other.isInCart, isInCart) ||
+                other.isInCart == isInCart) &&
+            (identical(other.quantityInCart, quantityInCart) ||
+                other.quantityInCart == quantityInCart));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, imageUrl, price, restaurantChain);
+  int get hashCode => Object.hash(runtimeType, id, name, imageUrl, price,
+      restaurantChain, isInCart, quantityInCart);
 
   @JsonKey(ignore: true)
   @override
@@ -216,7 +253,9 @@ abstract class _FoodItem extends FoodItem {
       required final String name,
       required final String imageUrl,
       required final double price,
-      required final String restaurantChain}) = _$FoodItemImpl;
+      required final String restaurantChain,
+      required final bool isInCart,
+      final int quantityInCart}) = _$FoodItemImpl;
   const _FoodItem._() : super._();
 
   factory _FoodItem.fromJson(Map<String, dynamic> json) =
@@ -232,6 +271,10 @@ abstract class _FoodItem extends FoodItem {
   double get price;
   @override
   String get restaurantChain;
+  @override
+  bool get isInCart;
+  @override
+  int get quantityInCart;
   @override
   @JsonKey(ignore: true)
   _$$FoodItemImplCopyWith<_$FoodItemImpl> get copyWith =>

@@ -22,18 +22,28 @@ const FoodItemSchema = CollectionSchema(
       name: r'imageUrl',
       type: IsarType.string,
     ),
-    r'name': PropertySchema(
+    r'isInCart': PropertySchema(
       id: 1,
+      name: r'isInCart',
+      type: IsarType.bool,
+    ),
+    r'name': PropertySchema(
+      id: 2,
       name: r'name',
       type: IsarType.string,
     ),
     r'price': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'price',
       type: IsarType.double,
     ),
+    r'quantityInCart': PropertySchema(
+      id: 4,
+      name: r'quantityInCart',
+      type: IsarType.long,
+    ),
     r'restaurantChain': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'restaurantChain',
       type: IsarType.string,
     )
@@ -71,9 +81,11 @@ void _foodItemSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.imageUrl);
-  writer.writeString(offsets[1], object.name);
-  writer.writeDouble(offsets[2], object.price);
-  writer.writeString(offsets[3], object.restaurantChain);
+  writer.writeBool(offsets[1], object.isInCart);
+  writer.writeString(offsets[2], object.name);
+  writer.writeDouble(offsets[3], object.price);
+  writer.writeLong(offsets[4], object.quantityInCart);
+  writer.writeString(offsets[5], object.restaurantChain);
 }
 
 FoodItem _foodItemDeserialize(
@@ -85,9 +97,11 @@ FoodItem _foodItemDeserialize(
   final object = FoodItem(
     id: id,
     imageUrl: reader.readString(offsets[0]),
-    name: reader.readString(offsets[1]),
-    price: reader.readDouble(offsets[2]),
-    restaurantChain: reader.readString(offsets[3]),
+    isInCart: reader.readBool(offsets[1]),
+    name: reader.readString(offsets[2]),
+    price: reader.readDouble(offsets[3]),
+    quantityInCart: reader.readLong(offsets[4]),
+    restaurantChain: reader.readString(offsets[5]),
   );
   return object;
 }
@@ -102,10 +116,14 @@ P _foodItemDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 2:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 3:
+      return (reader.readDouble(offset)) as P;
+    case 4:
+      return (reader.readLong(offset)) as P;
+    case 5:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -381,6 +399,16 @@ extension FoodItemQueryFilter
     });
   }
 
+  QueryBuilder<FoodItem, FoodItem, QAfterFilterCondition> isInCartEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isInCart',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<FoodItem, FoodItem, QAfterFilterCondition> nameEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -573,6 +601,61 @@ extension FoodItemQueryFilter
     });
   }
 
+  QueryBuilder<FoodItem, FoodItem, QAfterFilterCondition> quantityInCartEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'quantityInCart',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodItem, FoodItem, QAfterFilterCondition>
+      quantityInCartGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'quantityInCart',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodItem, FoodItem, QAfterFilterCondition>
+      quantityInCartLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'quantityInCart',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<FoodItem, FoodItem, QAfterFilterCondition> quantityInCartBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'quantityInCart',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<FoodItem, FoodItem, QAfterFilterCondition>
       restaurantChainEqualTo(
     String value, {
@@ -729,6 +812,18 @@ extension FoodItemQuerySortBy on QueryBuilder<FoodItem, FoodItem, QSortBy> {
     });
   }
 
+  QueryBuilder<FoodItem, FoodItem, QAfterSortBy> sortByIsInCart() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isInCart', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodItem, FoodItem, QAfterSortBy> sortByIsInCartDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isInCart', Sort.desc);
+    });
+  }
+
   QueryBuilder<FoodItem, FoodItem, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -750,6 +845,18 @@ extension FoodItemQuerySortBy on QueryBuilder<FoodItem, FoodItem, QSortBy> {
   QueryBuilder<FoodItem, FoodItem, QAfterSortBy> sortByPriceDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'price', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FoodItem, FoodItem, QAfterSortBy> sortByQuantityInCart() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'quantityInCart', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodItem, FoodItem, QAfterSortBy> sortByQuantityInCartDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'quantityInCart', Sort.desc);
     });
   }
 
@@ -792,6 +899,18 @@ extension FoodItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<FoodItem, FoodItem, QAfterSortBy> thenByIsInCart() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isInCart', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodItem, FoodItem, QAfterSortBy> thenByIsInCartDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isInCart', Sort.desc);
+    });
+  }
+
   QueryBuilder<FoodItem, FoodItem, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -813,6 +932,18 @@ extension FoodItemQuerySortThenBy
   QueryBuilder<FoodItem, FoodItem, QAfterSortBy> thenByPriceDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'price', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FoodItem, FoodItem, QAfterSortBy> thenByQuantityInCart() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'quantityInCart', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FoodItem, FoodItem, QAfterSortBy> thenByQuantityInCartDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'quantityInCart', Sort.desc);
     });
   }
 
@@ -838,6 +969,12 @@ extension FoodItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<FoodItem, FoodItem, QDistinct> distinctByIsInCart() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isInCart');
+    });
+  }
+
   QueryBuilder<FoodItem, FoodItem, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -848,6 +985,12 @@ extension FoodItemQueryWhereDistinct
   QueryBuilder<FoodItem, FoodItem, QDistinct> distinctByPrice() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'price');
+    });
+  }
+
+  QueryBuilder<FoodItem, FoodItem, QDistinct> distinctByQuantityInCart() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'quantityInCart');
     });
   }
 
@@ -874,6 +1017,12 @@ extension FoodItemQueryProperty
     });
   }
 
+  QueryBuilder<FoodItem, bool, QQueryOperations> isInCartProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isInCart');
+    });
+  }
+
   QueryBuilder<FoodItem, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
@@ -883,6 +1032,12 @@ extension FoodItemQueryProperty
   QueryBuilder<FoodItem, double, QQueryOperations> priceProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'price');
+    });
+  }
+
+  QueryBuilder<FoodItem, int, QQueryOperations> quantityInCartProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'quantityInCart');
     });
   }
 
@@ -904,6 +1059,8 @@ _$FoodItemImpl _$$FoodItemImplFromJson(Map<String, dynamic> json) =>
       imageUrl: json['imageUrl'] as String,
       price: (json['price'] as num).toDouble(),
       restaurantChain: json['restaurantChain'] as String,
+      isInCart: json['isInCart'] as bool,
+      quantityInCart: (json['quantityInCart'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$$FoodItemImplToJson(_$FoodItemImpl instance) =>
@@ -913,4 +1070,6 @@ Map<String, dynamic> _$$FoodItemImplToJson(_$FoodItemImpl instance) =>
       'imageUrl': instance.imageUrl,
       'price': instance.price,
       'restaurantChain': instance.restaurantChain,
+      'isInCart': instance.isInCart,
+      'quantityInCart': instance.quantityInCart,
     };

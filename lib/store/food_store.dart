@@ -41,16 +41,38 @@ abstract class _FoodStore with Store {
 
   @action
   void addToCart(FoodItem foodItem) {
-    cartItems.add(foodItem);
+    final existingItemIndex =
+        cartItems.indexWhere((item) => item.id == foodItem.id);
+
+    if (existingItemIndex != -1) {
+      final existingItem = cartItems[existingItemIndex];
+      final updatedItem = existingItem.copyWith(
+          quantityInCart: existingItem.quantityInCart + 1);
+      cartItems[existingItemIndex] = updatedItem;
+    } else {
+      cartItems.add(foodItem.copyWith(quantityInCart: 1));
+    }
   }
 
   @action
   void removeFromCart(FoodItem foodItem) {
-    cartItems.remove(foodItem);
+    final existingItemIndex =
+        cartItems.indexWhere((item) => item.id == foodItem.id);
+
+    if (existingItemIndex != -1) {
+      final existingItem = cartItems[existingItemIndex];
+      if (existingItem.quantityInCart > 1) {
+        final updatedItem = existingItem.copyWith(
+            quantityInCart: existingItem.quantityInCart - 1);
+        cartItems[existingItemIndex] = updatedItem;
+      } else {
+        cartItems.removeAt(existingItemIndex);
+      }
+    }
   }
 
   @action
-  Future<void> checkout() async {
+  void checkout() {
     cartItems.clear();
   }
 }

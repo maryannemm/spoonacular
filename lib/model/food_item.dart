@@ -14,6 +14,8 @@ class FoodItem with _$FoodItem {
     required String imageUrl,
     required double price,
     required String restaurantChain,
+    required bool isInCart,
+    @Default(0) int quantityInCart,
   }) = _FoodItem;
   @override
   Id get id => id;
